@@ -12,6 +12,8 @@ set(SOURCES
    ${SRC_PREFIX}/main.cpp
    ${SRC_PREFIX}/tgaimage.cpp
    ${SRC_PREFIX}/tgaimage.h
+   ${SRC_PREFIX}/rasterisation.cpp
+   ${SRC_PREFIX}/rasterisation.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
