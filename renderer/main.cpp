@@ -17,15 +17,21 @@ void plotPoints(TGAImage& image, const vector<Point>& points,
    }
 }
 
+void triangle(Point p0, Point p1, Point p2, TGAImage& image, TGAColor color)
+{
+   plotPoints(image, calculateLine(p0, p1), color);
+   plotPoints(image, calculateLine(p1, p2), color);
+   plotPoints(image, calculateLine(p2, p0), color);
+}
+
 int main(int argc, char** argv)
 {
-   TGAImage image(100, 100, TGAImage::RGB);
+   TGAImage image(200, 200, TGAImage::RGB);
 
-   // Draw line
-   Point p0{0, 0};
-   Point p1{100, 100};
-   const auto points = calculateLine(p0, p1);
-   plotPoints(image, points, blue);
+   triangle({10, 70}, {50, 160}, {70, 80}, image, red);
+   triangle({180, 50}, {150, 1}, {70, 180}, image, white);
+   triangle({180, 150}, {120, 160}, {130, 180}, image, green);
+
 
    // Place origin at the left bottom corner of the image
    image.flip_vertically();

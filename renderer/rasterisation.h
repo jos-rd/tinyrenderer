@@ -12,5 +12,5 @@ struct Point
    auto operator<=>(const Point&) const = default;
 };
 
-std::vector<Point> calculateLine(Point& p0, Point& p1);
+std::vector<Point> calculateLine(Point p0, Point p1);
 } // namespace Rasterisation

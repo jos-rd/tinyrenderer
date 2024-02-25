@@ -4,7 +4,7 @@ using namespace std;
 
 namespace Rasterisation
 {
-vector<Point> calculateLine(Point& p0, Point& p1)
+vector<Point> calculateLine(Point p0, Point p1)
 {
    vector<Point> points;
 
