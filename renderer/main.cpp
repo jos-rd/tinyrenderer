@@ -1,5 +1,8 @@
+#include "objloader.h"
 #include "rasterisation.h"
 #include "tgaimage.h"
+
+#include <ranges>
 
 using namespace std;
 using namespace Rasterisation;
@@ -26,14 +29,31 @@ void triangle(Point p0, Point p1, Point p2, TGAImage& image, TGAColor color)
 
 int main(int argc, char** argv)
 {
-   TGAImage image(200, 200, TGAImage::RGB);
+   const auto width{400};
+   const auto height{400};
+   TGAImage image(width, height, TGAImage::RGB);
 
-   triangle({10, 70}, {50, 160}, {70, 80}, image, red);
-   triangle({180, 50}, {150, 1}, {70, 180}, image, white);
-   triangle({180, 150}, {120, 160}, {130, 180}, image, green);
+   // Parse OBJ file
+   Model model{"test.obj"};
+   if (const auto parseResult = model.parseObj(); !parseResult) {
+      return 1;
+   }
 
-
-   // Place origin at the left bottom corner of the image
+   // Draw
+   for (const auto& face : model.getFaces()) {
+      for (const auto i : views::iota(0, 3)) {
+         const auto currentVertex = model.getVertex(face.m_vertexIndices.at(i));
+         const auto nextVertex =
+            model.getVertex(face.m_vertexIndices.at((i + 1) % 3));
+         const int x0 = (currentVertex.x + 1.) * width / 2.;
+         const int y0 = (currentVertex.y + 1.) * height / 2.;
+         const int x1 = (nextVertex.x + 1.) * width / 2.;
+         const int y1 = (nextVertex.y + 1.) * height / 2.;
+         const auto line =
+            Rasterisation::calculateLine(Point{x0, y0}, Point{x1, y1});
+         plotPoints(image, line, red);
+      }
+   }
    image.flip_vertically();
    image.write_tga_file("output.tga");
 
